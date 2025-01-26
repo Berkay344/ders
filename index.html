@@ -3,14 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Veri Gönderme</title>
+    <title>Haftalık Ders Programı</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 70%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 3px solid black;
+        }
+
+        thead {
+            background-color: #0066cc;
+            color: white;
+        }
+
+        th, td {
+            border: 2px solid black;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        td:first-child {
+            background-color: #99ccff;
+            color: black;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .actions {
+            margin-top: 20px;
+        }
+
+        .actions input, .actions button {
+            padding: 10px 15px;
+            margin: 5px;
+            font-size: 16px;
+        }
+
+        .actions input {
+            width: 200px;
+        }
+
+        #output {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: left;
+            margin-left: 25%;
+            width: 50%;
+        }
+
+        #output-table {
+            width: 70%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        #output-table th, #output-table td {
+            border: 2px solid black;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        #output-table th {
+            background-color: #0066cc;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <h1>Veri Gönder</h1>
-    <form action="https://berkay344.github.io/veri2/" method="GET">
-        <label for="userData">Verinizi Girin:</label>
-        <input type="text" id="userData" name="data" placeholder="Verinizi girin" required />
-        <button type="submit">Gönder</button>
-    </form>
+    <h1>☠Haftalık Ders Programı☠</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Gün</th>
+                <th>Ders 1</th>
+                <th>Ders 2</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Pazartesi</td>
+                <td>Türk Dili II</td>
+                <td>Dijital İçerik Pazarlaması</td>
+            </tr>
+            <tr>
+                <td>Salı</td>
+                <td>Atatürk İlkeleri ve İnkılap Tarihi II</td>
+                <td>Halkla İlişkiler Yazarlığı</td>
+            </tr>
+            <tr>
+                <td>Çarşamba</td>
+                <td>Kriz İletişimi ve Yönetimi</td>
+                <td>Reklamda Yaratıcılık</td>
+            </tr>
+            <tr>
+                <td>Perşembe</td>
+                <td>Dijital İçerik Pazarlaması</td>
+                <td>Türk Dili II</td>
+            </tr>
+            <tr>
+                <td>Cuma</td>
+                <td>Atatürk İlkeleri ve İnkılap Tarihi II</td>
+                <td>Kriz İletişimi ve Yönetimi</td>
+            </tr>
+            <tr>
+                <td>Cumartesi</td>
+                <td>Reklamda Yaratıcılık</td>
+                <td>Halkla İlişkiler Yazarlığı</td>
+            </tr>
+            <tr>
+                <td>Pazar</td>
+                <td>Serbest Çalışma</td>
+                <td>Dinlenme</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="actions">
+        <input type="text" id="lesson-name" placeholder="Ders Adı">
+        <input type="text" id="unit-name" placeholder="Ünite (Örneğin: Ünite 1)">
+        <input type="number" id="page-number" placeholder="Sayfa No">
+        <button id="save-btn">Kaydet</button>
+        <button id="show-btn">Göster</button>
+        <button id="clear-btn">Temizle</button>
+    </div>
+
+    <div id="output">
+        <h3>Kaydedilen Dersler, Üniteler ve Sayfa Numaraları:</h3>
+        <table id="output-table">
+            <thead>
+                <tr>
+                    <th>Ders Adı</th>
+                    <th>Ünite</th>
+                    <th>Sayfa Numarası</th>
+                </tr>
+            </thead>
+            <tbody id="output-body">
+                <!-- Dinamik olarak ders bilgileri buraya eklenecek -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const lessonInput = document.getElementById('lesson-name');
+        const unitInput = document.getElementById('unit-name');
+        const pageNumberInput = document.getElementById('page-number');
+        const saveButton = document.getElementById('save-btn');
+        const showButton = document.getElementById('show-btn');
+        const clearButton = document.getElementById('clear-btn');
+        const outputBody = document.getElementById('output-body');
+
+        // Ders, ünite ve sayfa bilgilerini kaydet
+        saveButton.addEventListener('click', function() {
+            const lessonName = lessonInput.value.trim();
+            const unitName = unitInput.value.trim();
+            const pageNumber = pageNumberInput.value.trim();
+
+            if (lessonName && unitName && pageNumber) {
+                const key = `${lessonName}-${unitName}`;
+                const data = { lessonName, unitName, pageNumber };
+                localStorage.setItem(key, JSON.stringify(data));
+                alert(`${lessonName} dersi için ${unitName} ünite, sayfa numarası (${pageNumber}) kaydedildi.`);
+                lessonInput.value = '';
+                unitInput.value = '';
+                pageNumberInput.value = '';
+            } else {
+                alert('Lütfen ders adı, ünite ve sayfa numarası girin.');
+            }
+        });
+
+        // Kaydedilen bilgileri göster
+        showButton.addEventListener('click', function() {
+            outputBody.innerHTML = ''; // Önceki veriyi temizle
+            let allData = '';
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const data = JSON.parse(localStorage.getItem(key));
+                allData += `
+                    <tr>
+                        <td>${data.lessonName}</td>
+                        <td>${data.unitName}</td>
+                        <td>${data.pageNumber}</td>
+                    </tr>
+                `;
+            }
+
+            if (allData) {
+                outputBody.innerHTML = allData;
+            } else {
+                outputBody.innerHTML = '<tr><td colspan="3">Hiç ders kaydedilmedi.</td></tr>';
+            }
+        });
+
+        // Tüm verileri temizle
+        clearButton.addEventListener('click', function() {
+            localStorage.clear();
+            alert('Tüm kayıtlar silindi.');
+            outputBody.innerHTML = '';
+        });
+    </script>
 </body>
-</html>
+    </html>
