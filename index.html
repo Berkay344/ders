@@ -3,98 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Haftalık Ders Programı</title>
+    <title>Ders Çalışma Programı</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
             margin: 20px;
-            background-color: #f4f4f9;
-            color: #333;
-            text-align: center;
         }
-
-        h1 {
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
         table {
-            width: 70%;
-            margin: 0 auto;
+            width: 80%;
+            margin: 20px auto;
             border-collapse: collapse;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            border: 3px solid black;
+            background: white;
+            border: 4px solid black;
         }
-
-        thead {
-            background-color: #0066cc;
-            color: white;
-        }
-
         th, td {
-            border: 2px solid black;
-            padding: 10px;
+            border: 4px solid black;
+            padding: 12px;
             text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
             font-weight: bold;
         }
-
         td:first-child {
-            background-color: #99ccff;
-            color: black;
+            font-weight: bold;
         }
-
-        tbody tr:nth-child(even) {
-            background-color: #f9f9f9;
+        select {
+            padding: 10px;
+            margin: 10px;
         }
-
-        tbody tr:hover {
-            background-color: #f1f1f1;
-        }
-
         .actions {
             margin-top: 20px;
         }
-
         .actions input, .actions button {
             padding: 10px 15px;
             margin: 5px;
             font-size: 16px;
         }
-
         .actions input {
             width: 200px;
-        }
-
-        #output {
-            margin-top: 20px;
-            font-weight: bold;
-            text-align: left;
-            margin-left: 25%;
-            width: 50%;
-        }
-
-        #output-table {
-            width: 70%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-
-        #output-table th, #output-table td {
-            border: 2px solid black;
-            padding: 8px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        #output-table th {
-            background-color: #0066cc;
-            color: white;
         }
     </style>
 </head>
 <body>
-    <h1>☠Haftalık Ders Programı☠</h1>
+    <h1>Ders Çalışma Programı</h1>
+    <label for="daySelect">Günü Seç:</label>
+    <select id="daySelect" onchange="filterSchedule()">
+        <option value="all">Tüm Günler</option>
+        <option value="Pazartesi">Pazartesi</option>
+        <option value="Salı">Salı</option>
+        <option value="Çarşamba">Çarşamba</option>
+        <option value="Perşembe">Perşembe</option>
+        <option value="Cuma">Cuma</option>
+        <option value="Cumartesi">Cumartesi</option>
+        <option value="Pazar">Pazar</option>
+    </select>
     <table>
         <thead>
             <tr>
@@ -103,57 +69,27 @@
                 <th>Ders 2</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>Pazartesi</td>
-                <td>Türk Dili II</td>
-                <td>Dijital İçerik Pazarlaması</td>
-            </tr>
-            <tr>
-                <td>Salı</td>
-                <td>Atatürk İlkeleri ve İnkılap Tarihi II</td>
-                <td>Halkla İlişkiler Yazarlığı</td>
-            </tr>
-            <tr>
-                <td>Çarşamba</td>
-                <td>Kriz İletişimi ve Yönetimi</td>
-                <td>Reklamda Yaratıcılık</td>
-            </tr>
-            <tr>
-                <td>Perşembe</td>
-                <td>Dijital İçerik Pazarlaması</td>
-                <td>Türk Dili II</td>
-            </tr>
-            <tr>
-                <td>Cuma</td>
-                <td>Atatürk İlkeleri ve İnkılap Tarihi II</td>
-                <td>Kriz İletişimi ve Yönetimi</td>
-            </tr>
-            <tr>
-                <td>Cumartesi</td>
-                <td>Reklamda Yaratıcılık</td>
-                <td>Halkla İlişkiler Yazarlığı</td>
-            </tr>
-            <tr>
-                <td>Pazar</td>
-                <td>Serbest Çalışma</td>
-                <td>Dinlenme</td>
-            </tr>
+        <tbody id="schedule">
+            <tr data-day="Pazartesi"><td>Pazartesi</td><td>Yeni İletişim Teknolojileri (1-4)</td><td>İngilizce 2 (1-6)</td></tr>
+            <tr data-day="Salı"><td>Salı</td><td>İletişim Kuramları (1-4)</td><td>Marka ve Yönetimi (1-4)</td></tr>
+            <tr data-day="Çarşamba"><td>Çarşamba</td><td>Pazarlama İletişimi (1-4)</td><td>Reklamda Yaratıcılık (1-4)</td></tr>
+            <tr data-day="Perşembe"><td>Perşembe</td><td>Dijital İçerik Pazarlaması (1-4)</td><td>Kriz İletişimi ve Yönetimi (1-4)</td></tr>
+            <tr data-day="Cuma"><td>Cuma</td><td>İngilizce 2 (1-6)</td><td>Yeni İletişim Teknolojileri (1-4)</td></tr>
+            <tr data-day="Cumartesi"><td>Cumartesi</td><td>Marka ve Yönetimi (1-4)</td><td>Pazarlama İletişimi (1-4)</td></tr>
+            <tr data-day="Pazar"><td>Pazar</td><td>Reklamda Yaratıcılık (1-4)</td><td>Dijital İçerik Pazarlaması (1-4)</td></tr>
         </tbody>
     </table>
-
     <div class="actions">
         <input type="text" id="lesson-name" placeholder="Ders Adı">
-        <input type="text" id="unit-name" placeholder="Ünite (Örneğin: Ünite 1)">
+        <input type="text" id="unit-name" placeholder="Ünite (Örn: Ünite 1)">
         <input type="number" id="page-number" placeholder="Sayfa No">
         <button id="save-btn">Kaydet</button>
         <button id="show-btn">Göster</button>
         <button id="clear-btn">Temizle</button>
     </div>
-
     <div id="output">
         <h3>Kaydedilen Dersler, Üniteler ve Sayfa Numaraları:</h3>
-        <table id="output-table">
+        <table>
             <thead>
                 <tr>
                     <th>Ders Adı</th>
@@ -161,69 +97,50 @@
                     <th>Sayfa Numarası</th>
                 </tr>
             </thead>
-            <tbody id="output-body">
-                <!-- Dinamik olarak ders bilgileri buraya eklenecek -->
-            </tbody>
+            <tbody id="output-body"></tbody>
         </table>
     </div>
-
     <script>
-        const lessonInput = document.getElementById('lesson-name');
-        const unitInput = document.getElementById('unit-name');
-        const pageNumberInput = document.getElementById('page-number');
-        const saveButton = document.getElementById('save-btn');
-        const showButton = document.getElementById('show-btn');
-        const clearButton = document.getElementById('clear-btn');
-        const outputBody = document.getElementById('output-body');
+        function filterSchedule() {
+            let selectedDay = document.getElementById("daySelect").value;
+            let rows = document.querySelectorAll("#schedule tr");
+            rows.forEach(row => {
+                if (selectedDay === "all" || row.getAttribute("data-day") === selectedDay) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
 
-        // Ders, ünite ve sayfa bilgilerini kaydet
-        saveButton.addEventListener('click', function() {
-            const lessonName = lessonInput.value.trim();
-            const unitName = unitInput.value.trim();
-            const pageNumber = pageNumberInput.value.trim();
-
+        document.getElementById("save-btn").addEventListener("click", function() {
+            const lessonName = document.getElementById("lesson-name").value;
+            const unitName = document.getElementById("unit-name").value;
+            const pageNumber = document.getElementById("page-number").value;
             if (lessonName && unitName && pageNumber) {
                 const key = `${lessonName}-${unitName}`;
-                const data = { lessonName, unitName, pageNumber };
-                localStorage.setItem(key, JSON.stringify(data));
-                alert(`${lessonName} dersi için ${unitName} ünite, sayfa numarası (${pageNumber}) kaydedildi.`);
-                lessonInput.value = '';
-                unitInput.value = '';
-                pageNumberInput.value = '';
+                localStorage.setItem(key, JSON.stringify({ lessonName, unitName, pageNumber }));
+                alert("Kayıt Başarılı!");
             } else {
-                alert('Lütfen ders adı, ünite ve sayfa numarası girin.');
+                alert("Lütfen tüm alanları doldurun.");
             }
         });
 
-        // Kaydedilen bilgileri göster
-        showButton.addEventListener('click', function() {
-            outputBody.innerHTML = ''; // Önceki veriyi temizle
-            let allData = '';
+        document.getElementById("show-btn").addEventListener("click", function() {
+            let outputBody = document.getElementById("output-body");
+            outputBody.innerHTML = "";
             for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                const data = JSON.parse(localStorage.getItem(key));
-                allData += `
-                    <tr>
-                        <td>${data.lessonName}</td>
-                        <td>${data.unitName}</td>
-                        <td>${data.pageNumber}</td>
-                    </tr>
-                `;
-            }
-
-            if (allData) {
-                outputBody.innerHTML = allData;
-            } else {
-                outputBody.innerHTML = '<tr><td colspan="3">Hiç ders kaydedilmedi.</td></tr>';
+                let key = localStorage.key(i);
+                let data = JSON.parse(localStorage.getItem(key));
+                outputBody.innerHTML += `<tr><td>${data.lessonName}</td><td>${data.unitName}</td><td>${data.pageNumber}</td></tr>`;
             }
         });
 
-        // Tüm verileri temizle
-        clearButton.addEventListener('click', function() {
+        document.getElementById("clear-btn").addEventListener("click", function() {
             localStorage.clear();
-            alert('Tüm kayıtlar silindi.');
-            outputBody.innerHTML = '';
+            alert("Tüm kayıtlar silindi.");
+            document.getElementById("output-body").innerHTML = "";
         });
     </script>
 </body>
-    </html>
+</html>
