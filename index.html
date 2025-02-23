@@ -38,18 +38,41 @@
         .actions {
             margin-top: 20px;
         }
-        .actions input, .actions button {
+        .actions button {
+            background-color: #007bff; /* Tüm butonlar mavi */
+            color: white;
+            font-weight: bold;
             padding: 10px 15px;
-            margin: 5px;
             font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
         }
-        .actions input {
-            width: 200px;
+        .actions button:hover {
+            background-color: #0056b3; /* Daha koyu mavi */
+        }
+        #progress-btn {
+            background-color: #28a745; /* Yeşil */
+        }
+        #progress-btn:hover {
+            background-color: #218838; /* Daha koyu yeşil */
+        }
+        input {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #output {
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
+
     <h1>Ders Çalışma Programı</h1>
+
     <label for="daySelect">Günü Seç:</label>
     <select id="daySelect" onchange="filterSchedule()">
         <option value="all">Tüm Günler</option>
@@ -61,6 +84,7 @@
         <option value="Cumartesi">Cumartesi</option>
         <option value="Pazar">Pazar</option>
     </select>
+
     <table>
         <thead>
             <tr>
@@ -79,14 +103,17 @@
             <tr data-day="Pazar"><td>Pazar</td><td>Reklamda Yaratıcılık (1-4)</td><td>Dijital İçerik Pazarlaması (1-4)</td></tr>
         </tbody>
     </table>
+
     <div class="actions">
         <input type="text" id="lesson-name" placeholder="Ders Adı">
         <input type="text" id="unit-name" placeholder="Ünite (Örn: Ünite 1)">
         <input type="number" id="page-number" placeholder="Sayfa No">
         <button id="save-btn">Kaydet</button>
+        <button id="progress-btn">İlerlemeyi Gör</button>
         <button id="show-btn">Göster</button>
         <button id="clear-btn">Temizle</button>
     </div>
+
     <div id="output">
         <h3>Kaydedilen Dersler, Üniteler ve Sayfa Numaraları:</h3>
         <table>
@@ -100,26 +127,17 @@
             <tbody id="output-body"></tbody>
         </table>
     </div>
-    <script>
-        function filterSchedule() {
-            let selectedDay = document.getElementById("daySelect").value;
-            let rows = document.querySelectorAll("#schedule tr");
-            rows.forEach(row => {
-                if (selectedDay === "all" || row.getAttribute("data-day") === selectedDay) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
-            });
-        }
 
+    <script>
         document.getElementById("save-btn").addEventListener("click", function() {
-            const lessonName = document.getElementById("lesson-name").value;
-            const unitName = document.getElementById("unit-name").value;
-            const pageNumber = document.getElementById("page-number").value;
+            const lessonName = document.getElementById("lesson-name").value.trim();
+            const unitName = document.getElementById("unit-name").value.trim();
+            const pageNumber = document.getElementById("page-number").value.trim();
+
             if (lessonName && unitName && pageNumber) {
-                const key = `${lessonName}-${unitName}`;
-                localStorage.setItem(key, JSON.stringify({ lessonName, unitName, pageNumber }));
+                let savedData = JSON.parse(localStorage.getItem("savedLessons")) || [];
+                savedData.push({ lessonName, unitName, pageNumber });
+                localStorage.setItem("savedLessons", JSON.stringify(savedData));
                 alert("Kayıt Başarılı!");
             } else {
                 alert("Lütfen tüm alanları doldurun.");
@@ -129,18 +147,27 @@
         document.getElementById("show-btn").addEventListener("click", function() {
             let outputBody = document.getElementById("output-body");
             outputBody.innerHTML = "";
-            for (let i = 0; i < localStorage.length; i++) {
-                let key = localStorage.key(i);
-                let data = JSON.parse(localStorage.getItem(key));
-                outputBody.innerHTML += `<tr><td>${data.lessonName}</td><td>${data.unitName}</td><td>${data.pageNumber}</td></tr>`;
+
+            let savedData = JSON.parse(localStorage.getItem("savedLessons")) || [];
+            if (savedData.length === 0) {
+                outputBody.innerHTML = "<tr><td colspan='3'>Kayıtlı veri bulunamadı.</td></tr>";
+            } else {
+                savedData.forEach(data => {
+                    outputBody.innerHTML += `<tr><td>${data.lessonName}</td><td>${data.unitName}</td><td>${data.pageNumber}</td></tr>`;
+                });
             }
         });
 
         document.getElementById("clear-btn").addEventListener("click", function() {
-            localStorage.clear();
+            localStorage.removeItem("savedLessons");
             alert("Tüm kayıtlar silindi.");
-            document.getElementById("output-body").innerHTML = "";
+            document.getElementById("output-body").innerHTML = "<tr><td colspan='3'>Kayıtlı veri bulunamadı.</td></tr>";
+        });
+
+        document.getElementById("progress-btn").addEventListener("click", function() {
+            window.location.href = "ilerleme.html";
         });
     </script>
+
 </body>
 </html>
