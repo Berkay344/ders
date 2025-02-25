@@ -14,16 +14,30 @@
         .progress-container { width: 80%; margin: 20px auto; text-align: left; }
         .progress-bar { width: 100%; background: #ddd; height: 20px; border-radius: 10px; overflow: hidden; }
         .progress-fill {
-    height: 100%;
-    background: #28a745;
-    width: 0%;
-    text-align: center;
-    color: white;
-    font-weight: bold;
-    transition: width 0.5s;
-    font-size: 13px; /* Yazı boyutunu büyüttüm */
-    line-height: 20px; /* Yazının dikey hizalanması */
-}
+            height: 100%;
+            background: #28a745;
+            width: 0%;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            transition: width 0.5s;
+            font-size: 13px; /* Yazı boyutunu büyüttüm */
+            line-height: 20px; /* Yazının dikey hizalanması */
+        }
+        #home-btn {
+            background-color: #17a2b8;
+            color: white;
+            font-weight: bold;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        #home-btn:hover {
+            background-color: #138496;
+        }
     </style>
 </head>
 <body>
@@ -51,6 +65,8 @@
             <tbody id="output-body"></tbody>
         </table>
     </div>
+    <button id="home-btn" onclick="window.location.href='index.html'">Ana Sayfaya Dön</button>
+
     <script>
         document.getElementById("save-btn").addEventListener("click", function() {
             const lessonName = document.getElementById("lesson-name").value;
