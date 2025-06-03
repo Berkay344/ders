@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Soru Kontrol</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
       margin: 0;
-      background: #f9f9f9;
+      background: #f2f2f2;
     }
 
     h2 {
       text-align: center;
+      font-size: 24px;
+      color: #d32f2f;
     }
 
     .soru-container {
@@ -29,14 +32,16 @@
       padding: 8px 12px;
       margin: 2px;
       border: 1px solid #ccc;
-      border-radius: 5px;
-      background-color: #fff;
+      border-radius: 6px;
+      background-color: white;
       cursor: pointer;
+      transition: 0.3s;
     }
 
     .butonlar button.selected {
       background-color: #007bff;
-      color: #fff;
+      color: white;
+      border-color: #0056b3;
     }
 
     input, button {
@@ -44,14 +49,19 @@
       padding: 12px;
       font-size: 16px;
       margin-top: 10px;
-      border-radius: 5px;
+      border-radius: 6px;
       border: 1px solid #ccc;
+      box-sizing: border-box;
     }
 
     #goster {
       background-color: #28a745;
-      color: #fff;
+      color: white;
       font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
     }
 
     .sonuclar {
@@ -68,6 +78,9 @@
       padding: 8px 16px;
       border-radius: 6px;
       font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .dogruYazi { background: #c8e6c9; color: #2e7d32; }
@@ -84,6 +97,7 @@
       border-collapse: collapse;
       table-layout: fixed;
       word-wrap: break-word;
+      background-color: white;
     }
 
     th, td {
@@ -96,6 +110,14 @@
     .dogru { background-color: #c8e6c9; }
     .yanlis { background-color: #ffcdd2; }
     .bos { background-color: #fff9c4; }
+
+    label {
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
 
     @media (max-width: 600px) {
       th, td {
@@ -112,14 +134,14 @@
 </head>
 <body>
 
-  <h2>Çıkmış sorular Test Kontrol</h2>
+  <h2><i class="fas fa-clipboard-check"></i> Çıkmış Sorular Test Kontrol</h2>
 
   <div id="sorular"></div>
 
-  <label>Cevap Anahtarı (örn: DCBACDBCADABCDABCDAB)</label>
-  <input type="text" id="cevapAnahtari" maxlength="20" placeholder="20 harflik doğru cevaplar">
+  <label><i class="fas fa-key"></i> Cevap Anahtarı (örn: DCBACDBCADABCDABCDAB)</label>
+  <input type="text" id="cevapAnahtari" maxlength="20" placeholder="20 harflik doğru cevaplar" />
 
-  <button id="goster" onclick="kontrolEt()">Sonuçları Göster</button>
+  <button id="goster" onclick="kontrolEt()"><i class="fas fa-check-circle"></i> Sonuçları Göster</button>
 
   <div class="sonuclar" id="ozet"></div>
 
@@ -143,13 +165,13 @@
       const soruDiv = document.createElement("div");
       soruDiv.className = "soru-container";
       soruDiv.innerHTML = `
-        <p>${i + 1}. Soru:</p>
+        <p><i class="fas fa-question-circle"></i> ${i + 1}. Soru:</p>
         <div class="butonlar" data-soru="${i}">
           <button onclick="sec(${i}, 'A')">A</button>
           <button onclick="sec(${i}, 'B')">B</button>
           <button onclick="sec(${i}, 'C')">C</button>
           <button onclick="sec(${i}, 'D')">D</button>
-          <button onclick="sec(${i}, '-')">Boş</button>
+          <button onclick="sec(${i}, '-')"><i class="fas fa-eraser"></i> Boş</button>
         </div>
       `;
       soruAlani.appendChild(soruDiv);
@@ -161,7 +183,7 @@
       ogrenciCevaplar[soruNo] = secim;
       const butonlar = document.querySelectorAll(`.butonlar[data-soru="${soruNo}"] button`);
       butonlar.forEach(btn => {
-        if (btn.textContent === secim || (secim === "-" && btn.textContent === "Boş")) {
+        if (btn.textContent === secim || (secim === "-" && btn.textContent.includes("Boş"))) {
           btn.classList.add("selected");
         } else {
           btn.classList.remove("selected");
@@ -203,9 +225,9 @@
       }
 
       ozet.innerHTML = `
-        <span class="dogruYazi">${dogru} Doğru</span>
-        <span class="yanlisYazi">${yanlis} Yanlış</span>
-        <span class="bosYazi">${bos} Boş</span>
+        <span class="dogruYazi"><i class="fas fa-check-circle"></i> ${dogru} Doğru</span>
+        <span class="yanlisYazi"><i class="fas fa-times-circle"></i> ${yanlis} Yanlış</span>
+        <span class="bosYazi"><i class="fas fa-minus-circle"></i> ${bos} Boş</span>
       `;
     }
   </script>
